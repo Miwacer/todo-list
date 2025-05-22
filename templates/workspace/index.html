@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>TODO list</h1>
-
+	  <h1>
+    TODO list
+    <a href="{% url 'workspace:task-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+    </h1>
   {% for task in tasks.all %}
     <div class="card">
       <div class="card-body">
@@ -26,6 +30,9 @@
           {{ tag.name }}
         {% endfor %}
       </p>
+        <hr>
+        <a href="{% url 'workspace:task-delete' pk=task.id %}">DELETE</a> |
+        <a href="{% url 'workspace:task-update' pk=task.id %}">UPDATE</a>
       </div>
 
     </div>

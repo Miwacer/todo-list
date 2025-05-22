@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from workspace.models import Task, Tag
 
@@ -30,12 +30,13 @@ class TaskDeleteView(generic.DeleteView):
     success_url = reverse_lazy("workspace:index")
 
 
-def switch_status(request, pk: int):
-    task = Task.objects.get(pk=pk)
-    task.status = not task.status
-    task.save()
+class SwitchTaskStatusView(View):
+    def post(self, request, pk: int, *args, **kwargs):
+        task = Task.objects.get(pk=pk)
+        task.status = not task.status
+        task.save()
 
-    return redirect("workspace:index")
+        return redirect("workspace:index")
 
 
 class TagListView(generic.ListView):

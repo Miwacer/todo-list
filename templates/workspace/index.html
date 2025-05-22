@@ -34,13 +34,16 @@
         <hr>
         <a href="{% url 'workspace:task-delete' pk=task.id %}">DELETE</a> |
         <a href="{% url 'workspace:task-update' pk=task.id %}">UPDATE</a> |
-        <a href="{% url 'workspace:switch-status' pk=task.pk %}">
-          {% if task.status %}
-            <i class="btn btn-secondary">Undo</i>
+        <form action="{% url 'workspace:switch-status' pk=task.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn {% if task.status %}btn-secondary{% else %}btn-success{% endif %}">
+            {% if task.status %}
+              <i>Undo</i>
             {% else %}
-            <i class="btn btn-success">Complete</i>
-          {% endif %}
-        </a>
+              <i>Complete</i>
+            {% endif %}
+          </button>
+        </form>
       </div>
     </div>
   {% endfor %}

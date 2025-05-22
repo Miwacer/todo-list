@@ -17,7 +17,7 @@ class SwitchStatusTests(TestCase):
 
     def test_switch_status(self):
         url = reverse("workspace:switch-status", args=[self.task.id])
-        response = self.client.get(url)
+        response = self.client.post(url)
 
         self.task.refresh_from_db()
 

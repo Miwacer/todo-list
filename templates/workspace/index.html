@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>hello</h1>
+	<h1>TODO list</h1>
+
+  {% for task in tasks.all %}
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <p class="font-weight-bold">
+          {{ task.content }}
+            <strong class="text-{% if tasks.status %}success{% else %}danger{% endif %}">
+              {% if tasks.status %}
+              	done
+              {% else %}
+                Not done
+              {% endif %}
+            </strong>
+          </p>
+        </div>
+        <p>Created: {{ task.datetime }}
+        DeadLine: {{ task.deadline }}</p>
+        <p>
+        Tags:
+        {% for tag in task.tags.all %}
+          {{ tag.name }}
+        {% endfor %}
+      </p>
+      </div>
+
+    </div>
+
+  {% endfor %}
+
 {% endblock %}

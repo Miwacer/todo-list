@@ -1,4 +1,14 @@
 from django.shortcuts import render
 
+from workspace.models import Task
+
+
 def index(request):
-    return render(request, "workspace/index.html")
+    tasks = Task.objects.all().order_by('-datetime')
+
+    context = {
+        "tasks": tasks,
+    }
+    return render(request, "workspace/index.html", context)
+
+

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from workspace.models import Task
+from workspace.models import Task, Tag
 
 
 def index(request):
@@ -36,3 +36,24 @@ def switch_status(request, pk: int):
     task.save()
 
     return redirect("workspace:index")
+
+
+class TagListView(generic.ListView):
+    model = Tag
+
+
+class TagCreateView(generic.CreateView):
+    model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("workspace:tag-list")
+
+
+class TagUpdateView(generic.UpdateView):
+    model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("workspace:tag-list")
+
+
+class TagDeleteView(generic.DeleteView):
+    model = Tag
+    success_url = reverse_lazy("workspace:tag-list")

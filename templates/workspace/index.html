@@ -1,42 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-	  <h1>
+  <h1>
     TODO list
     <a href="{% url 'workspace:task-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
-    </h1>
+  </h1>
+
   {% for task in tasks.all %}
-    <div class="card">
+    <div class="card my-3">
       <div class="card-body">
-        <div class="card-title">
-          <p class="font-weight-bold">
+        <h5 class="card-title">
           {{ task.content }}
-            <strong class="text-{% if tasks.status %}success{% else %}danger{% endif %}">
-              {% if tasks.status %}
-              	done
-              {% else %}
-                Not done
-              {% endif %}
-            </strong>
-          </p>
-        </div>
-        <p>Created: {{ task.datetime }}
-        DeadLine: {{ task.deadline }}</p>
+          <span class="text-{% if task.status %}success{% else %}danger{% endif %}">
+            {% if task.status %}
+              done
+            {% else %}
+              Not done
+            {% endif %}
+          </span>
+        </h5>
+        <p class="mb-1">Created: {{ task.datetime }}</p>
+        <p class="text-danger">DeadLine: {{ task.deadline }}</p>
         <p>
-        Tags:
-        {% for tag in task.tags.all %}
-          {{ tag.name }}
-        {% endfor %}
-      </p>
+          Tags:
+          {% for tag in task.tags.all %}
+            {{ tag.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            <em>No tags</em>
+          {% endfor %}
+        </p>
         <hr>
         <a href="{% url 'workspace:task-delete' pk=task.id %}">DELETE</a> |
-        <a href="{% url 'workspace:task-update' pk=task.id %}">UPDATE</a>
+        <a href="{% url 'workspace:task-update' pk=task.id %}">UPDATE</a> |
+        <a href="{% url 'workspace:switch-status' pk=task.pk %}">
+          {% if task.status %}
+            <i class="btn btn-secondary">Undo</i>
+            {% else %}
+            <i class="btn btn-success">Complete</i>
+          {% endif %}
+        </a>
       </div>
-
     </div>
-
   {% endfor %}
-
 {% endblock %}
